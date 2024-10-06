@@ -1,5 +1,5 @@
-const channelSlug = 'music-club-culture'; // Channel slug
-const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=100`; // Fetch 100 blocks per request
+const channelSlug = 'film-stills-nx1dbbqgbb4'; // Channel slug
+const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=1000`; // Fetch 100 blocks per request
 let totalBlocks = []; // Array to hold all blocks
 
 async function fetchChannelContents(page = 1) {
