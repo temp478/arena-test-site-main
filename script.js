@@ -1,4 +1,4 @@
-const channelSlug = 'test-formati'; // Channel slug
+const channelSlug = 'indigenous-cybernetics'; // Channel slug
 const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=1000`; // Fetch 100 blocks per request
 let totalBlocks = []; // Array to hold all blocks
 
