@@ -1,4 +1,4 @@
-const channelSlug = 'film-stills-nx1dbbqgbb4'; // Channel slug
+const channelSlug = 'temp-papers-pdf'; // Channel slug
 const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=1000`; // Fetch 100 blocks per request
 let totalBlocks = []; // Array to hold all blocks
 
