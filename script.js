@@ -8,8 +8,6 @@ async function fetchChannelContents(page = 1) {
         const data = await response.json();
         totalBlocks = totalBlocks.concat(data.contents); // Concatenate new blocks
 
-        console.log('Fetched blocks:', data.contents); // Log the fetched blocks
-
         // Check if we need to fetch more pages
         if (data.total_pages > page && totalBlocks.length < 3000) {
             await fetchChannelContents(page + 1); // Fetch next page
@@ -42,13 +40,6 @@ function displayBlocks(blocks) {
                 </a>`;
         } else if (block.class === 'Media') {
             blockElement.innerHTML = `<h3>${block.title || 'Untitled'}</h3><iframe src="${block.source.url}" frameborder="0" allowfullscreen></iframe>`;
-        } else if (block.class === 'Attachment') {
-            const pdfThumbnailUrl = 'https://example.com/path/to/pdf-thumbnail.png'; // Replace with a valid image URL
-            blockElement.innerHTML = `
-                <h3>${block.title || 'Untitled'}</h3>
-                <img src="${pdfThumbnailUrl}" alt="PDF Thumbnail" class="pdf-thumbnail">
-                <a href="${block.source.url}" target="_blank">Download PDF</a>`;
-            console.log('PDF block found:', block); // Log the PDF block
         }
 
         blocksContainer.appendChild(blockElement);
