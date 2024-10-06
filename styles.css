@@ -7,7 +7,6 @@ body {
     position: relative;
 }
 
-
 #blocks-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -36,6 +35,12 @@ body {
 
 .block a:hover {
     text-decoration: underline;
+}
+
+.pdf-thumbnail {
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 0px; /* No border radius */
 }
 
 .thumbnail {
