@@ -2,6 +2,7 @@ body {
     background-color: black;
     color: white;
     font-family: 'Arial Unicode MS', Arial, sans-serif;
+    font-size: 16px; /* Adjust this value to match are.na's font size */
     margin: 0;
     padding: 0;
     position: relative;
@@ -41,4 +42,22 @@ body {
 .thumbnail {
     max-width: 100%;
     border-radius: 0px;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+    body {
+        font-size: 12px; /* Set a discrete font size for mobile */
+    }
+
+    #blocks-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Show 2 columns */
+        gap: 0px;
+        padding: 0px;
+    }
+
+    .block {
+        padding: 4px; /* Adjust padding for mobile if needed */
+    }
 }
