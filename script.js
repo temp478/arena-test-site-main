@@ -1,7 +1,15 @@
-const channelSlug = 'indigenous-cybernetics'; // Channel slug
-const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=1000`; // Fetch 100 blocks per request
+const channelSlug = 'strajk'; // Channel slug
+const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=10000`; // Fetch 10000 blocks per request
 let totalBlocks = []; // Array to hold all blocks
+const channelLink = document.getElementById('channel-link');
+channelLink.textContent = channelSlug;
 
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }, 7000); // Delay the scrolling action by 5 seconds
+  });
+  
 async function fetchChannelContents(page = 1) {
     try {
         const response = await fetch(`${apiUrl}&page=${page}`);
@@ -18,6 +26,19 @@ async function fetchChannelContents(page = 1) {
         console.error('Error fetching channel contents:', error);
     }
 }
+const floatingText = document.querySelector('.floating-text');
+
+function updateFloatingTextPosition() {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const randomX = Math.random() * (windowWidth - 200);
+    const randomY = Math.random() * (windowHeight - 200);
+
+    floatingText.style.transform = `translate(${randomX}px, ${randomY}px)`;
+}
+
+// Update the position of the floating text every 500ms
+setInterval(updateFloatingTextPosition, 500);
 
 function displayBlocks(blocks) {
     const blocksContainer = document.getElementById('blocks-container');
