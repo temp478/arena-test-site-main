@@ -1,4 +1,4 @@
-const channelSlug = 'strajk'; // Channel slug
+const channelSlug = 'misc-etc'; // Channel slug
 const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=10000`; // Fetch 10000 blocks per request
 let totalBlocks = []; // Array to hold all blocks
 const channelLink = document.getElementById('channel-link');
