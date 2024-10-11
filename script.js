@@ -1,14 +1,10 @@
-const channelSlug = 'misc-etc'; // Channel slug
+const channelSlug = 'test-formati'; // Channel slug
 const apiUrl = `https://api.are.na/v2/channels/${channelSlug}/contents?per=10000`; // Fetch 10000 blocks per request
 let totalBlocks = []; // Array to hold all blocks
 const channelLink = document.getElementById('channel-link');
 channelLink.textContent = channelSlug;
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, 7000); // Delay the scrolling action by 5 seconds
-  });
+  
   
 async function fetchChannelContents(page = 1) {
     try {
@@ -26,28 +22,22 @@ async function fetchChannelContents(page = 1) {
         console.error('Error fetching channel contents:', error);
     }
 }
-const floatingText = document.querySelector('.floating-text');
-
-function updateFloatingTextPosition() {
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const randomX = Math.random() * (windowWidth - 200);
-    const randomY = Math.random() * (windowHeight - 200);
-
-    floatingText.style.transform = `translate(${randomX}px, ${randomY}px)`;
-}
-
-// Update the position of the floating text every 500ms
-setInterval(updateFloatingTextPosition, 500);
 
 function displayBlocks(blocks) {
     const blocksContainer = document.getElementById('blocks-container');
     blocksContainer.innerHTML = ''; // Clear previous content
 
+    // Log the blocks to see what we have
+    console.log('Blocks:', blocks);
+
     blocks.forEach(block => {
+        console.log('Block:', block); // Log the entire block object
+        console.log('Block class:', block.class); // Log the class of each block
+
         const blockElement = document.createElement('div');
         blockElement.classList.add('block');
 
+        // Handle different block types
         if (block.class === 'Image') {
             blockElement.innerHTML = `<img src="${block.image.display.url}" alt="${block.title || 'Image'}">`;
         } else if (block.class === 'Text') {
@@ -56,15 +46,38 @@ function displayBlocks(blocks) {
             const thumbnailUrl = block.image ? block.image.thumb.url : ''; // Get thumbnail URL
             blockElement.innerHTML = `
                 <h3>${block.title || 'Untitled'}</h3>
-                <a href="${block.source.url}" target="_blank">
+                <a href="${block.source ? block.source.url : '#'}" target="_blank">
                     <img class="thumbnail" src="${thumbnailUrl}" alt="${block.title || 'Thumbnail'}">
                 </a>`;
         } else if (block.class === 'Media') {
-            blockElement.innerHTML = `<h3>${block.title || 'Untitled'}</h3><iframe src="${block.source.url}" frameborder="0" allowfullscreen></iframe>`;
+            const thumbnailUrl = block.image ? block.image.thumb.url : '';
+            blockElement.innerHTML = `
+                <h3>${block.title || 'Untitled'}</h3>
+                <a href="${block.source ? block.source.url : '#'}" target="_blank">
+                    <img class="thumbnail" src="${thumbnailUrl}" alt="${block.title || 'Thumbnail'}">
+                </a>`;
+        } else if (block.class === 'Attachment') {
+            const imageUrl = block.image ? block.image.display.url : null; // Use the display URL if available
+            const attachmentUrl = block.attachment ? block.attachment.url : null; // Ensure we get the URL if available
+            const filename = block.attachment ? block.attachment.file_name : 'Attachment'; // Use the file_name from the attachment object        
+        
+            // Create the inner content
+    if (imageUrl) {
+        blockElement.innerHTML = `
+            <h3>${block.title || 'Untitled'}</h3>
+            <img src="${imageUrl}" alt="${block.title || 'Image'}">
+            <span>DDL ${filename}</span>`;
+    } else {
+        blockElement.innerHTML = `
+            <h3>${block.title || 'Untitled'}</h3>
+            <span>DDL ${filename}</span>`;
+    }
         }
+        
 
-        blocksContainer.appendChild(blockElement);
-    });
+  // Append the block element to the container
+    blocksContainer.appendChild(blockElement);    
+});
 }
 
 // Fetch channel contents on page load
