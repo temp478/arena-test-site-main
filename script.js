@@ -4,8 +4,6 @@ let totalBlocks = []; // Array to hold all blocks
 const channelLink = document.getElementById('channel-link');
 channelLink.textContent = channelSlug;
 
-  
-  
 async function fetchChannelContents(page = 1) {
     try {
         const response = await fetch(`${apiUrl}&page=${page}`);
@@ -16,6 +14,8 @@ async function fetchChannelContents(page = 1) {
         if (data.total_pages > page && totalBlocks.length < 3000) {
             await fetchChannelContents(page + 1); // Fetch next page
         } else {
+            // Sort blocks by created_at in ascending order
+            totalBlocks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
             displayBlocks(totalBlocks.slice(0, 3000)); // Display up to 3000 blocks
         }
     } catch (error) {
@@ -41,7 +41,16 @@ function displayBlocks(blocks) {
         if (block.class === 'Image') {
             blockElement.innerHTML = `<img src="${block.image.display.url}" alt="${block.title || 'Image'}">`;
         } else if (block.class === 'Text') {
-            blockElement.innerHTML = `<h3>${block.title || 'Untitled'}</h3><p>${block.content_html}</p>`;
+            const content = block.content_html || block.content || 'No content available.';
+            const description = block.description_html || block.description || '';
+        
+            blockElement.innerHTML = `
+            <div class="block-content">${content}</div>
+                    ${description ? `<div class="block-description">${description}</div>` : ''}
+                </div>
+            `;
+        
+        
         } else if (block.class === 'Link') {
             const thumbnailUrl = block.image ? block.image.thumb.url : ''; // Get thumbnail URL
             blockElement.innerHTML = `
@@ -60,24 +69,23 @@ function displayBlocks(blocks) {
             const imageUrl = block.image ? block.image.display.url : null; // Use the display URL if available
             const attachmentUrl = block.attachment ? block.attachment.url : null; // Ensure we get the URL if available
             const filename = block.attachment ? block.attachment.file_name : 'Attachment'; // Use the file_name from the attachment object        
-        
-            // Create the inner content
-    if (imageUrl) {
-        blockElement.innerHTML = `
-            <h3>${block.title || 'Untitled'}</h3>
-            <img src="${imageUrl}" alt="${block.title || 'Image'}">
-            <span>DDL ${filename}</span>`;
-    } else {
-        blockElement.innerHTML = `
-            <h3>${block.title || 'Untitled'}</h3>
-            <span>DDL ${filename}</span>`;
-    }
-        }
-        
 
-  // Append the block element to the container
-    blocksContainer.appendChild(blockElement);    
-});
+            // Create the inner content
+            if (imageUrl) {
+                blockElement.innerHTML = `
+                    <h3>${block.title || 'Untitled'}</h3>
+                    <img src="${imageUrl}" alt="${block.title || 'Image'}">
+                    <span>DDL ${filename}</span>`;
+            } else {
+                blockElement.innerHTML = `
+                    <h3>${block.title || 'Untitled'}</h3>
+                    <span>DDL ${filename}</span>`;
+            }
+        }
+
+        // Append the block element to the container
+        blocksContainer.appendChild(blockElement);    
+    });
 }
 
 // Fetch channel contents on page load
