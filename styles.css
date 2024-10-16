@@ -4,7 +4,7 @@ body {
     color: white;
     font-family: 'Arial Unicode MS', Arial, sans-serif;
     font-size: 16px; /* Adjust this value to match are.na's font size */
-    margin: 0;
+    margin-top: 25px;
     padding: 0;
     position: relative;
 }
